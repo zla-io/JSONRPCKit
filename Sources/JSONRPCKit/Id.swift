@@ -48,13 +48,29 @@ extension Id: Hashable {
     }
 }
 
-public func ==(lhs: Id, rhs: Id) -> Bool {
+public func ===(lhs: Id, rhs: Id) -> Bool {
     if case let (.number(left), .number(right)) = (lhs, rhs) {
         return left == right
     }
     
     if case let (.string(left), .string(right)) = (lhs, rhs) {
         return left == right
+    }
+    
+    return false
+}
+
+public func ==(lhs: Id, rhs: Id) -> Bool {
+    if lhs === rhs {
+        return true
+    }
+    
+    if case let (.number(left), .string(right)) = (lhs, rhs) {
+        return left == Int(right)
+    }
+    
+    if case let (.string(left), .number(right)) = (lhs, rhs) {
+        return Int(left) == right
     }
     
     return false
